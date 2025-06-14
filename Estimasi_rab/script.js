@@ -1,4 +1,4 @@
-// script.js
+// Estimasi_rab/script.js
 
 // --- Global Variable Declarations (initialized in window.onload) ---
 let form;
@@ -10,7 +10,7 @@ let sipilTablesWrapper;
 let meTablesWrapper;
 let currentResetButton; // Reference to the reset button
 
-// Data storage for prices, loaded from data.json
+// Data storage for prices, loaded from Google Apps Script
 let categorizedPrices = {};
 
 // --- Helper Functions ---
@@ -381,16 +381,19 @@ const calculateGrandTotal = () => {
 window.addEventListener("load", async () => {
   console.log("Window loaded: Initializing script...");
 
-  // Load data from JSON file first 
+  // Load data from Google Spreadsheet via Apps Script
+  // *** PENTING: GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA ***
+  const APPS_SCRIPT_DATA_URL = "https://script.google.com/macros/s/AKfycbyGLs6LMthu9iGaH3MXYTgyEp6rcKXzp0gAjNY1lYJA2rE7DwEeRH-WlZNqMa34An8q/exec"; 
+
   try {
-    const response = await fetch('data.json');
+    const response = await fetch(APPS_SCRIPT_DATA_URL);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     categorizedPrices = await response.json();
-    console.log("Data loaded successfully:", categorizedPrices);
+    console.log("Data loaded successfully from Apps Script:", categorizedPrices);
   } catch (error) {
-    console.error('Error loading data.json:', error);
+    console.error('Error loading data from Google Apps Script:', error);
     messageDiv = document.getElementById("message"); // Ensure messageDiv is available even if load fails
     if (messageDiv) {
       messageDiv.textContent = "Error loading price data. Please check console for details.";
@@ -551,7 +554,6 @@ window.addEventListener("load", async () => {
         ".boq-table-body:not(.hidden) .boq-item-row"
       );
       let itemCounter = 0;
-      // Removed MAX_ITEMS_TO_SEND, as we only send filled items now 
 
       allItemRows.forEach((row) => {
         const selectedJenisPekerjaanValue = row.querySelector(".jenis-pekerjaan").value;
@@ -571,15 +573,12 @@ window.addEventListener("load", async () => {
         }
       });
 
-      // Removed the loop that filled remaining item columns with empty strings 
-
       formDataToSend["Grand_Total"] = parseRupiah(grandTotalAmount.textContent);
 
       console.log("Data being sent to Google Apps Script:", formDataToSend);
 
-      // --- YOUR GOOGLE APPS SCRIPT WEB APP URL GOES HERE! ---
-      // Make sure this URL is correct and the Apps Script is deployed as a Web App
-      // with access set to "Anyone" or "Anyone, even anonymous".
+      // --- URL UNTUK PENGIRIMAN DATA FORM KE GOOGLE APPS SCRIPT (MUNGKIN SAMA DENGAN URL DATA) ---
+      // Pastikan URL ini benar dan Apps Script disebarkan sebagai Web App
       const scriptURL = "https://script.google.com/macros/s/AKfycbxkbDYrxHr__Bz3rinIA5i6dwiq1yaDacmiyOV6T_Nxj4PaIIpp0zC29Zwa5OsX1LPU/exec"; // Perlu diganti jika URL berubah
 
       // Send data as JSON string with the correct Content-Type header 
