@@ -580,7 +580,7 @@ window.addEventListener("load", async () => {
       // --- YOUR GOOGLE APPS SCRIPT WEB APP URL GOES HERE! ---
       // Make sure this URL is correct and the Apps Script is deployed as a Web App
       // with access set to "Anyone" or "Anyone, even anonymous".
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxkbDYrxHr__Bz3rinIA5i6dwiq1yaDacmiyOV6T_Nxj4PaIIpp0zC29Zwa5OsX1LPU/exec"; // Perlu diganti jika URL berubah
+      const scriptURL = "https://script.google.com/macros/s/AKfycbxkbDYrxHr__Bz3rinIA5i6dwi1yaDacmiyOV6T_Nxj4PaIIpp0zC29Zwa5OsX1LPU/exec"; // Perlu diganti jika URL berubah
 
       // Send data as JSON string with the correct Content-Type header 
       const response = await fetch(scriptURL, {
