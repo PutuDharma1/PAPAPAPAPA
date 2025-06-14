@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekapitulasi Rencana Anggaran Biaya</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 900px; /* Lebar yang lebih besar */
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .header-company {
+            text-align: left; /* Mepet kiri */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .header-company p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+            font-weight: bold; /* Menjadi bold */
+        }
+        .header-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header-title h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+        .section-info {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .section-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .section-info table td {
+            padding: 5px 0;
+            vertical-align: top;
+        }
+        .section-info table td:first-child {
+            width: 180px; /* Lebar kolom label */
+            font-weight: bold;
+        }
+        .section-info table td:nth-child(2) {
+            width: 10px; /* Pemisah ':' */
+            text-align: center;
+        }
+        .section-info table td:last-child {
+            text-align: left;
+        }
+
+        .price-table-container {
+            margin-top: 20px;
+        }
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .price-table th, .price-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .price-table th {
+            background-color: #E0FFFF; /* UBAH: Warna header tabel menjadi Light Cyan */
+            font-weight: bold;
+            color: #555;
+        }
+        .price-table td:nth-child(2) { /* Jenis Pekerjaan */
+            text-align: left;
+        }
+        /* Gaya untuk baris total */
+        .total-row td {
+            font-weight: bold; /* Default bold untuk nilai total */
+            background-color: #f9f9f9; /* Background default untuk baris total */
+        }
+        .total-row td:first-child { /* Gaya untuk label total */
+            text-align: right;
+            padding-right: 10px;
+        }
+        /* Gaya untuk membuat label SUB TOTAL, PEMBULATAN, GRAND TOTAL tidak tebal */
+        .total-row .label-normal-weight {
+            font-weight: normal;
+        }
+        /* UBAH: Gaya baru untuk sel kolom Total Harga (Rp) dan sel nilai total akhir */
+        .price-table tbody tr td:last-child, /* Untuk kolom (Rp) di baris item */
+        .total-row .total-amount-cell { /* Untuk sel nilai total akhir di baris subtotal, pembulatan, ppn, grand total */
+            background-color: #E0FFFF; /* Warna background cell total akhir menjadi Light Cyan */
+        }
+
+
+        .notes {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+            padding: 10px;
+            border-top: 1px dashed #ddd;
+        }
+        .signatures {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 60px;
+            text-align: center;
+        }
+        .signature-box {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .signature-box p {
+            margin: 0;
+            padding-top: 5px;
+            font-size: 13px;
+            color: #555;
+        }
+        .signature-line {
+            width: 80%;
+            height: 1px;
+            background-color: #333;
+            margin-top: 60px; /* Ruang untuk tanda tangan */
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-company">
+            <p>PT. SUMBER ALFARIA TRIJAYA, Tbk</p>
+            <p>BUILDING & MAINTENANCE DEPT</p>
+            <p>CABANG: </p>
+        </div>
+
+        <div class="header-title">
+            <h1>REKAPITULASI RENCANA ANGGARAN BIAYA</h1>
+        </div>
+
+        <div class="section-info">
+            <table>
+                <tr><td>LOKASI</td><td>:</td><td></td></tr>
+                <tr><td>PROYEK</td><td>:</td><td></td></tr>
+                <tr><td>LINGKUP PEKERJAAN</td><td>:</td><td></td></tr>
+                <tr><td>LUAS TANAH</td><td>:</td><td></td></tr>
+                <tr><td>LUAS BANGUNAN</td><td>:</td><td></td></tr>
+                <tr><td>LUAS TERBANGUNAN</td><td>:</td><td></td></tr>
+                <tr><td>LUAS AREA TERBUKA/AREA PARKIR</td><td>:</td><td></td></tr>
+                <tr><td>LUAS AREA SALES</td><td>:</td><td></td></tr>
+                <tr><td>LUAS GUDANG</td><td>:</td><td></td></tr>
+                <tr><td>TANGGAL RAB AWAL</td><td>:</td><td></td></tr>
+                <tr><td>TANGGAL RAB REVISI</td><td>:</td><td></td></tr>
+                <tr><td>WAKTU PELAKSANAAN</td><td>:</td><td></td></tr>
+                <tr><td>TANGGAL UKUR</td><td>:</td><td></td></tr>
+                <tr><td>DIUKUR OLEH</td><td>:</td><td></td></tr>
+                <tr><td>JENIS BANGUNAN EXISTING</td><td>:</td><td></td></tr>
+                <tr><td>RENCANA BANGUN</td><td>:</td><td></td></tr>
+                <tr><td>KONDISI BANGUNAN</td><td>:</td><td></td></tr>
+                <tr><td>TYPE TOKO</td><td>:</td><td></td></tr>
+            </table>
+        </div>
+
+        <div class="price-table-container">
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">NO.</th>
+                        <th rowspan="2">JENIS PEKERJAAN</th>
+                        <th colspan="3">Total Harga</th> </tr>
+                    <tr>
+                        <th>Material<br/>(a)</th>
+                        <th>Upah<br/>(b)</th>
+                        <th>(Rp)<br/>(c = a + b)</th> </tr>
+                </thead>
+                <tbody>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align: right;" class="label-normal-weight">SUB TOTAL (Rp)</td>
+                        <td></td> <td></td> <td class="total-amount-cell"></td> </tr>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align: right;" class="label-normal-weight">PEMBULATAN (Rp)</td>
+                        <td colspan="2"></td> <td class="total-amount-cell"></td> </tr>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align: right;">PPN 11% (Rp)</td> <td colspan="2"></td> <td class="total-amount-cell"></td> </tr>
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align: right;" class="label-normal-weight">GRAND TOTAL (Rp)</td>
+                        <td colspan="2"></td> <td class="total-amount-cell"></td> </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p style="font-size: 13px; margin-top: 20px;">
+            Estimasi waktu pelaksanaan  hari, terhitung sejak SPK dikeluarkan
+        </p>
+
+        <div class="signatures">
+            <div class="signature-box">
+                <p>Dibuat</p>
+                <div class="signature-line"></div>
+                <p>Br Building Support</p>
+            </div>
+            <div class="signature-box">
+                <p>Mengetahui</p>
+                <div class="signature-line"></div>
+                <p>Br Building Coord</p>
+            </div>
+            <div class="signature-box">
+                <p>Menyetujui</p>
+                <div class="signature-line"></div>
+                <p>Br Build & Mtc Manager</p>
+            </div>
+        </div>
+
+        <div class="notes">
+            <p>Catatan:</p>
+            <p>Harga tersebut sesuai dengan Gambar Rencana Renovasi terlampir jika ada perubahan gambar dan spesifikasi material akan dilakukan perhitungan volume dari PT. Sumber Alfaria Trijaya, Tbk adalah sebagai referensi yang tidak mengikat dan kontraktor diwajibkan untuk mengecek ulang.</p>
+            <p>Reff: SAT/SOP/BDM/002 Prosedur Estimasi Biaya Renovasi</p>
+        </div>
+    </div>
+</body>
+</html>
