@@ -381,7 +381,7 @@ const calculateGrandTotal = () => {
 window.addEventListener("load", async () => {
   console.log("Window loaded: Initializing script...");
 
-  // Load data from JSON file first
+  // Load data from JSON file first 
   try {
     const response = await fetch('data.json');
     if (!response.ok) {
@@ -404,7 +404,7 @@ window.addEventListener("load", async () => {
     return; // Stop further execution if data loading fails
   }
 
-  // Get references to DOM elements
+  // Get references to DOM elements 
   form = document.getElementById("form");
   submitButton = document.getElementById("submit-button");
   messageDiv = document.getElementById("message");
@@ -414,13 +414,13 @@ window.addEventListener("load", async () => {
   meTablesWrapper = document.getElementById("me-tables-wrapper");
   currentResetButton = form.querySelector("button[type='reset']");
 
-  // Initial state: hide both wrappers
+  // Initial state: hide both wrappers 
   sipilTablesWrapper.classList.add("hidden");
   meTablesWrapper.classList.add("hidden");
 
   // --- Event Listeners ---
 
-  // Handle "Add Row" buttons
+  // Handle "Add Row" buttons 
   document.querySelectorAll(".add-row-btn").forEach((button) => {
     button.addEventListener("click", () => {
       const category = button.dataset.category;
@@ -440,12 +440,12 @@ window.addEventListener("load", async () => {
     });
   });
 
-  // Handle "Lingkup Pekerjaan" select change
+  // Handle "Lingkup Pekerjaan" select change 
   lingkupPekerjaanSelect.addEventListener("change", (event) => {
     const selectedScope = event.target.value;
     console.log("Lingkup Pekerjaan changed to:", selectedScope);
 
-    // Clear all existing rows from all table bodies and hide wrappers
+    // Clear all existing rows from all table bodies and hide wrappers 
     document.querySelectorAll(".boq-table-body").forEach((tbody) => {
       tbody.innerHTML = ""; // Clear all rows
       calculateSubTotal(tbody); // Reset subtotal display
@@ -463,7 +463,7 @@ window.addEventListener("load", async () => {
       activeWrapper = meTablesWrapper;
     }
 
-    // If a scope is selected, add an initial row to each relevant table body
+    // If a scope is selected, add an initial row to each relevant table body 
     if (activeWrapper) {
       activeWrapper.querySelectorAll(".boq-table-body").forEach((tbody) => {
         const category = tbody.dataset.category;
@@ -476,27 +476,27 @@ window.addEventListener("load", async () => {
     updateAllRowNumbersAndTotals(); // Final update of numbers and totals
   });
 
-  // Handle form reset button
+  // Handle form reset button 
   currentResetButton.addEventListener("click", function () {
     console.log("Form reset initiated.");
     form.reset(); // Reset form fields
     messageDiv.style.display = "none"; // Hide any previous messages
 
-    // Clear all existing rows from all table bodies
+    // Clear all existing rows from all table bodies 
     document.querySelectorAll(".boq-table-body").forEach((tbody) => {
       tbody.innerHTML = "";
       calculateSubTotal(tbody); // Reset subtotal display
     });
 
-    // Hide both wrappers initially
+    // Hide both wrappers initially 
     sipilTablesWrapper.classList.add("hidden");
     meTablesWrapper.classList.add("hidden");
     calculateGrandTotal(); // Reset grand total
 
-    // Re-trigger the change event on 'lingkup_pekerjaan' to re-add initial rows based on current selection
+    // Re-trigger the change event on 'lingkup_pekerjaan' to re-add initial rows based on current selection 
     const currentLingkupAfterReset = lingkupPekerjaanSelect.value;
     if (currentLingkupAfterReset) {
-      // Manually set visibility and add initial rows based on the value
+      // Manually set visibility and add initial rows based on the value 
       if (currentLingkupAfterReset === "Sipil") {
         sipilTablesWrapper.classList.remove("hidden");
       } else if (currentLingkupAfterReset === "ME") {
@@ -517,7 +517,7 @@ window.addEventListener("load", async () => {
     updateAllRowNumbersAndTotals(); // Final update of all numbers and totals
   });
 
-  // --- Form Submission Handler (Moved inside window.onload) ---
+  // --- Form Submission Handler (Moved inside window.onload) --- 
   form.addEventListener("submit", async function (e) {
     e.preventDefault(); // Prevent default form submission
 
@@ -532,26 +532,31 @@ window.addEventListener("load", async () => {
       const formData = new FormData(this); // Get form data
       const formDataToSend = {}; // Object to hold data for Google Apps Script
 
-      // Collect main form data with original keys, updated for underscores
+      // Collect main form data with original keys, updated for underscores 
       formDataToSend["Timestamp"] = new Date().toLocaleString("en-GB", { timeZone: 'Asia/Jakarta' });
       formDataToSend["Lokasi"] = formData.get("Lokasi") || "";
       formDataToSend["Proyek"] = formData.get("Proyek") || "";
-      formDataToSend["Lingkup_Pekerjaan"] = formData.get("Lingkup Pekerjaan") || ""; // Updated key
-      formDataToSend["Luas_Bangunan"] = parseFloat(formData.get("Luas Bangunan")) || 0; // Updated key
+      formDataToSend["Cabang"] = formData.get("Cabang") || ""; // Tambahan baru
+      formDataToSend["Lingkup_Pekerjaan"] = formData.get("Lingkup Pekerjaan") || "";
+      formDataToSend["Luas_Bangunan"] = parseFloat(formData.get("Luas Bangunan")) || 0;
+      formDataToSend["Luas_Terbangunan"] = parseFloat(formData.get("Luas Terbangunan")) || 0; // Tambahan baru
+      formDataToSend["Luas_Area_Terbuka_Area_Parkir"] = parseFloat(formData.get("Luas Area Terbuka / Area Parkir")) || 0; // Tambahan baru
+      formDataToSend["Luas_Area_Sales"] = parseFloat(formData.get("Luas Area Sales")) || 0; // Tambahan baru
+      formDataToSend["Luas_Gudang"] = parseFloat(formData.get("Luas Gudang")) || 0; // Tambahan baru
       formDataToSend["Tanggal"] = formData.get("Tanggal") || "";
-      formDataToSend["Waktu_Pelaksanaan"] = formData.get("Waktu Pelaksanaan") || ""; // Updated key
+      formDataToSend["Waktu_Pelaksanaan"] = formData.get("Waktu Pelaksanaan") || "";
 
-      // Collect data from dynamically added table rows
+      // Collect data from dynamically added table rows 
       const allItemRows = document.querySelectorAll(
         ".boq-table-body:not(.hidden) .boq-item-row"
       );
       let itemCounter = 0;
-      // Removed MAX_ITEMS_TO_SEND, as we only send filled items now
+      // Removed MAX_ITEMS_TO_SEND, as we only send filled items now 
 
       allItemRows.forEach((row) => {
         const selectedJenisPekerjaanValue = row.querySelector(".jenis-pekerjaan").value;
 
-        // Only include rows where a "Jenis Pekerjaan" has been selected
+        // Only include rows where a "Jenis Pekerjaan" has been selected 
         if (selectedJenisPekerjaanValue) {
           itemCounter++;
           formDataToSend[`No_Item_${itemCounter}`] = itemCounter;
@@ -566,7 +571,7 @@ window.addEventListener("load", async () => {
         }
       });
 
-      // Removed the loop that filled remaining item columns with empty strings
+      // Removed the loop that filled remaining item columns with empty strings 
 
       formDataToSend["Grand_Total"] = parseRupiah(grandTotalAmount.textContent);
 
@@ -575,9 +580,9 @@ window.addEventListener("load", async () => {
       // --- YOUR GOOGLE APPS SCRIPT WEB APP URL GOES HERE! ---
       // Make sure this URL is correct and the Apps Script is deployed as a Web App
       // with access set to "Anyone" or "Anyone, even anonymous".
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxkbDYrxHr__Bz3rinIA5i6dwiq1yaDacmiyOV6T_Nxj4PaIIpp0zC29Zwa5OsX1LPU/exec";
+      const scriptURL = "https://script.google.com/macros/s/AKfycbxkbDYrxHr__Bz3rinIA5i6dwiq1yaDacmiyOV6T_Nxj4PaIIpp0zC29Zwa5OsX1LPU/exec"; // Perlu diganti jika URL berubah
 
-      // Send data as JSON string with the correct Content-Type header
+      // Send data as JSON string with the correct Content-Type header 
       const response = await fetch(scriptURL, {
         redirect: "follow", // Necessary for some Apps Script deployments
         method: "POST",
@@ -587,7 +592,7 @@ window.addEventListener("load", async () => {
         },
       });
 
-      // Handle the response from Apps Script
+      // Handle the response from Apps Script 
       const data = await response.json(); // Parse the JSON response from Apps Script
       console.log("Data: ", formDataToSend);
       console.log("Response from Apps Script:", data);
@@ -598,7 +603,7 @@ window.addEventListener("load", async () => {
         messageDiv.style.color = "white";
         form.reset(); // Reset the form fields
 
-        // Clear all dynamic table rows and reset totals on successful submission
+        // Clear all dynamic table rows and reset totals on successful submission 
         document.querySelectorAll(".boq-table-body").forEach((tbody) => {
           tbody.innerHTML = "";
           calculateSubTotal(tbody);
@@ -607,7 +612,7 @@ window.addEventListener("load", async () => {
         meTablesWrapper.classList.add("hidden");
         calculateGrandTotal(); // Reset grand total after submission
 
-        // After successful reset, re-add initial rows if a scope is still selected
+        // After successful reset, re-add initial rows if a scope is still selected 
         // This ensures the form is ready for new input
         const currentLingkupAfterReset = lingkupPekerjaanSelect.value;
         if (currentLingkupAfterReset) {
@@ -629,7 +634,7 @@ window.addEventListener("load", async () => {
         }
         updateAllRowNumbersAndTotals(); // Update all numbers and totals again
       } else {
-        // Throw an error if Apps Script reports a failure (e.g., status: "error")
+        // Throw an error if Apps Script reports a failure (e.g., status: "error") 
         throw new Error(data.message || "Pengiriman data gagal.");
       }
     } catch (error) {
@@ -638,7 +643,7 @@ window.addEventListener("load", async () => {
       messageDiv.style.backgroundColor = "#ce1e10"; // Red for error
       messageDiv.style.color = "white";
     } finally {
-      // Re-enable submit button and hide message after a delay
+      // Re-enable submit button and hide message after a delay 
       submitButton.disabled = false;
       submitButton.style.opacity = "1";
       setTimeout(() => {
@@ -648,7 +653,7 @@ window.addEventListener("load", async () => {
     }
   });
 
-  // Trigger initial change event if a default value is already selected (e.g., from browser autofill or pre-selected option)
+  // Trigger initial change event if a default value is already selected (e.g., from browser autofill or pre-selected option) 
   // This will ensure tables are shown and populated correctly on first load if a default 'Lingkup Pekerjaan' is present.
   if (lingkupPekerjaanSelect.value) {
     lingkupPekerjaanSelect.dispatchEvent(new Event("change"));

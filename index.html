@@ -1,1 +1,42 @@
-a
+const DATA_ENTRY_SHEET_NAME = "Sheet2"; 
+const TIME_STAMP_COLUMN_NAME = "Timestamp";
+
+const SPREADSHEET_ID = "116J074r3Nyy365G8_GXYoVzHGvqvjNvtESbPqQt5wUg"; 
+
+const SPREADSHEET = SpreadsheetApp.openById(SPREADSHEET_ID);
+const SHEET = SPREADSHEET.getSheetByName(DATA_ENTRY_SHEET_NAME);
+
+const doPost = (request = {}) => {
+  try {
+    const { postData: { contents } = {} } = request; // 'type' is not strictly needed here
+
+    const data = JSON.parse(contents);
+
+    appendToGoogleSheet(data);
+
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Data submitted successfully!" }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    console.error('Error in doPost for ${DATA_ENTRY_SHEET_NAME}:, error');
+
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: error.message || "An unknown error occurred." }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+};
+
+function appendToGoogleSheet(data) {
+  if (TIME_STAMP_COLUMN_NAME !== "") {
+    data[TIME_STAMP_COLUMN_NAME] = new Date();
+  }
+
+  if (!SHEET) {
+    throw new Error('Target sheet "${DATA_ENTRY_SHEET_NAME}" not found in the spreadsheet.');
+  }
+
+  const headers = SHEET.getRange(1, 1, 1, SHEET.getLastColumn()).getValues()[0];
+
+  const rowData = headers.map(headerFld => data[headerFld] || "");
+
+  SHEET.appendRow(rowData);
+}
