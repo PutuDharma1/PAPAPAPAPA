@@ -1,0 +1,234 @@
+{
+  "categorizedSipilPrices": {
+    "PEKERJAAN PERSIAPAN": [
+      {
+        "Jenis Pekerjaan": "Pembersihan Lokasi",
+        "Satuan": "M2",
+        "Harga Material": 0,
+        "Harga Upah": 15000
+      },
+      {
+        "Jenis Pekerjaan": "Bouwplank",
+        "Satuan": "M1",
+        "Harga Material": 5000,
+        "Harga Upah": 10000
+      },
+      {
+        "Jenis Pekerjaan": "Peralatan",
+        "Satuan": "Ls",
+        "Harga Material": 0,
+        "Harga Upah": 2000000
+      }
+    ],
+    "PEKERJAAN BOBOKAN / BONGKARAN": [
+      {
+        "Jenis Pekerjaan": "Bobokan Beton",
+        "Satuan": "M3",
+        "Harga Material": 0,
+        "Harga Upah": 150000
+      },
+      {
+        "Jenis Pekerjaan": "Bongkaran Dinding",
+        "Satuan": "M2",
+        "Harga Material": 0,
+        "Harga Upah": 20000
+      }
+    ],
+    "PEKERJAAN TANAH": [
+      {
+        "Jenis Pekerjaan": "Galian Tanah",
+        "Satuan": "M3",
+        "Harga Material": 0,
+        "Harga Upah": 50000
+      },
+      {
+        "Jenis Pekerjaan": "Urugan Tanah",
+        "Satuan": "M3",
+        "Harga Material": 50000,
+        "Harga Upah": 25000
+      }
+    ],
+    "PEKERJAAN PONDASI & BETON": [
+      {
+        "Jenis Pekerjaan": "Pondasi Batu Kali",
+        "Satuan": "M3",
+        "Harga Material": 500000,
+        "Harga Upah": 150000
+      },
+      {
+        "Jenis Pekerjaan": "Beton K-225",
+        "Satuan": "M3",
+        "Harga Material": 800000,
+        "Harga Upah": 200000
+      }
+    ],
+    "PEKERJAAN PASANGAN": [
+      {
+        "Jenis Pekerjaan": "Pasangan Bata Ringan",
+        "Satuan": "M2",
+        "Harga Material": 75000,
+        "Harga Upah": 30000
+      },
+      {
+        "Jenis Pekerjaan": "Plesteran Aci",
+        "Satuan": "M2",
+        "Harga Material": 20000,
+        "Harga Upah": 25000
+      }
+    ],
+    "PEKERJAAN BESI": [
+      {
+        "Jenis Pekerjaan": "Rangka Atap Baja Ringan",
+        "Satuan": "M2",
+        "Harga Material": 80000,
+        "Harga Upah": 40000
+      },
+      {
+        "Jenis Pekerjaan": "Pagar Besi Minimalis",
+        "Satuan": "M1",
+        "Harga Material": 250000,
+        "Harga Upah": 75000
+      }
+    ],
+    "PEKERJAAN KERAMIK": [
+      {
+        "Jenis Pekerjaan": "Keramik Lantai 40x40",
+        "Satuan": "M2",
+        "Harga Material": 60000,
+        "Harga Upah": 35000
+      },
+      {
+        "Jenis Pekerjaan": "Keramik Dinding KM",
+        "Satuan": "M2",
+        "Harga Material": 70000,
+        "Harga Upah": 40000
+      }
+    ],
+    "PEKERJAAN PLUMBING": [
+      {
+        "Jenis Pekerjaan": "Instalasi Air Bersih",
+        "Satuan": "M1",
+        "Harga Material": 20000,
+        "Harga Upah": 15000
+      },
+      {
+        "Jenis Pekerjaan": "Instalasi Air Kotor",
+        "Satuan": "M1",
+        "Harga Material": 25000,
+        "Harga Upah": 18000
+      }
+    ],
+    "PEKERJAAN SANITARY & ACECORIES": [
+      {
+        "Jenis Pekerjaan": "Kloset Duduk",
+        "Satuan": "Bh",
+        "Harga Material": 500000,
+        "Harga Upah": 100000
+      },
+      {
+        "Jenis Pekerjaan": "Wastafel",
+        "Satuan": "Bh",
+        "Harga Material": 300000,
+        "Harga Upah": 75000
+      }
+    ],
+    "PEKERJAAN ATAP": [
+      {
+        "Jenis Pekerjaan": "Genteng Metal",
+        "Satuan": "M2",
+        "Harga Material": 40000,
+        "Harga Upah": 25000
+      },
+      {
+        "Jenis Pekerjaan": "Listplang GRC",
+        "Satuan": "M1",
+        "Harga Material": 15000,
+        "Harga Upah": 10000
+      }
+    ],
+    "PEKERJAAN KUSEN, PINTU & KACA": [
+      {
+        "Jenis Pekerjaan": "Kusen Aluminium",
+        "Satuan": "M1",
+        "Harga Material": 80000,
+        "Harga Upah": 30000
+      },
+      {
+        "Jenis Pekerjaan": "Pintu Panil Solid",
+        "Satuan": "Bh",
+        "Harga Material": 800000,
+        "Harga Upah": 200000
+      },
+      {
+        "Jenis Pekerjaan": "Kaca Polos 5mm",
+        "Satuan": "M2",
+        "Harga Material": 50000,
+        "Harga Upah": 20000
+      }
+    ],
+    "PEKERJAAN FINISHING": [
+      {
+        "Jenis Pekerjaan": "Pengecatan Dinding Interior",
+        "Satuan": "M2",
+        "Harga Material": 20000,
+        "Harga Upah": 15000
+      },
+      {
+        "Jenis Pekerjaan": "Pengecatan Dinding Eksterior",
+        "Satuan": "M2",
+        "Harga Material": 25000,
+        "Harga Upah": 18000
+      }
+    ],
+    "PEKERJAAN TAMBAHAN": [
+      {
+        "Jenis Pekerjaan": "Pekerjaan Taman",
+        "Satuan": "Ls",
+        "Harga Material": 1000000,
+        "Harga Upah": 500000
+      }
+    ]
+  },
+  "categorizedMePrices": {
+    "INSTALASI": [
+      {
+        "Jenis Pekerjaan": "Instalasi Listrik Titik Lampu",
+        "Satuan": "ttk",
+        "Harga Material": 50000,
+        "Harga Upah": 30000
+      },
+      {
+        "Jenis Pekerjaan": "Instalasi Stop Kontak",
+        "Satuan": "ttk",
+        "Harga Material": 60000,
+        "Harga Upah": 35000
+      },
+      {
+        "Jenis Pekerjaan": "Kabel NYM 3x2.5mm",
+        "Satuan": "m",
+        "Harga Material": 10000,
+        "Harga Upah": 5000
+      }
+    ],
+    "FIXTURE": [
+      {
+        "Jenis Pekerjaan": "Lampu Downlight LED",
+        "Satuan": "Bh",
+        "Harga Material": 50000,
+        "Harga Upah": 15000
+      },
+      {
+        "Jenis Pekerjaan": "Stop Kontak Universal",
+        "Satuan": "Bh",
+        "Harga Material": 25000,
+        "Harga Upah": 10000
+      },
+      {
+        "Jenis Pekerjaan": "Saklar Double",
+        "Satuan": "Bh",
+        "Harga Material": 30000,
+        "Harga Upah": 10000
+      }
+    ]
+  }
+}

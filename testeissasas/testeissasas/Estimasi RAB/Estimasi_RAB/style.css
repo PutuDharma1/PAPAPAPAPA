@@ -1,0 +1,230 @@
+/* General Body and Header Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #ce1e10;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* Main Container Styles */
+.container {
+  max-width: 900px; /* Increased max-width for better table display */
+  margin: 20px auto;
+  background-color: white;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Form Element Styles */
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  color: #333;
+}
+
+.form-container input,
+.form-container select {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+  border-color: #ce1e10;
+  outline: none;
+}
+
+/* Table Specific Styles */
+.table-container {
+  overflow-x: auto; /* Enables horizontal scrolling for tables on smaller screens */
+  margin-top: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px; /* Ensures minimum width for table columns for readability */
+  margin-bottom: 20px; /* Space between tables */
+}
+
+table th,
+table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+table th {
+  background-color: #f2f2f2;
+  font-weight: 600;
+  color: #555;
+}
+
+table td input[type="number"],
+table td input[type="text"],
+table td select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+/* Custom styles for searchable dropdown (Jenis Pekerjaan) */
+.jenis-pekerjaan-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.jenis-pekerjaan-search-input {
+  padding-right: 30px; /* Space for a potential icon */
+}
+
+.jenis-pekerjaan-suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  z-index: 100; /* Ensure it appears above other elements */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  top: 100%; /* Position right below the input */
+  left: 0;
+}
+
+.jenis-pekerjaan-suggestions li {
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.jenis-pekerjaan-suggestions li:hover,
+.jenis-pekerjaan-suggestions li.selected {
+  background-color: #f0f0f0;
+}
+
+/* Button Group Styles */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-container button {
+  background-color: #ce1e10;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  flex: 1; /* Makes buttons take equal width */
+  font-weight: 500;
+}
+
+.form-container button:hover {
+  background-color: #ef190a;
+  transform: translateY(-2px);
+}
+
+.form-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Back Button Style */
+.back-btn {
+  color: #555;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.back-btn:hover {
+  color: #ce1e10;
+}
+
+/* Message Display Area */
+#message {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+  display: none; /* Hidden by default */
+}
+
+/* Specific Button Styles */
+.delete-row-btn {
+  background-color: #f44336 !important; /* Red for delete */
+  padding: 8px 12px !important;
+  border-radius: 4px !important;
+  font-weight: normal !important;
+  margin: 0 !important;
+  width: auto !important;
+  flex: none !important;
+}
+
+.delete-row-btn:hover {
+  background-color: #d32f2f !important;
+}
+
+.add-row-btn {
+  background-color: #4caf50 !important; /* Green for add */
+  margin-top: 10px !important;
+  padding: 10px 15px !important;
+  flex: none !important;
+  align-self: flex-end; /* Aligns the button to the right of its container */
+}
+
+.add-row-btn:hover {
+  background-color: #45a049 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    margin: 10px;
+    padding: 20px;
+  }
+
+  .button-group {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+  }
+
+  table {
+    min-width: 600px; /* Adjust min-width for smaller screens if needed */
+  }
+}
