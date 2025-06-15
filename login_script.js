@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             sessionStorage.setItem('loggedInUserCabang', password); // Opsional: simpan cabang/password
 
             setTimeout(() => {
-                window.location.href = 'index.html'; // Arahkan ke halaman landing utama Anda
+                window.location.href = 'Homepage/index.html'; // Arahkan ke halaman landing utama Anda
             }, 1500);
         } else {
             loginMessage.textContent = 'Username atau password salah.';
