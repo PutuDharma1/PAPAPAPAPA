@@ -1,108 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Landing Page</title>
-    <style>
-      body {
-        font-family: Cambria;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-      }
-
-      header {
-        background-color: #ce1e10;
-        color: white;
-        text-align: center;
-        padding: 10px 20px; /* Adjusted padding to match the reference */
-        display: flex; /* Added flexbox for logo and title alignment */
-        align-items: center; /* Vertically align items */
-        justify-content: center; /* Center content horizontally */
-        position: relative; /* For absolute positioning of the logo if needed */
-      }
-
-      header img {
-        width: 80px; /* Set width as per the reference */
-        height: auto; /* Maintain aspect ratio */
-        margin-right: 20px; /* Space between logo and title */
-        position: absolute; /* Position the logo */
-        left: 20px; /* Align logo to the left */
-        top: 50%; /* Center vertically */
-        transform: translateY(-50%); /* Adjust for perfect vertical centering */
-      }
-
-      header h1 {
-        margin: 0;
-        font-size: 2.5rem;
-      }
-
-      .container {
-        max-width: 800px;
-        margin: 30px auto;
-        background-color: white;
-        padding: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-      }
-
-      .menu-container {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .menu-container a {
-        padding: 12px;
-        margin: 10px 0;
-        background-color: #f0f0f0;
-        color: black;
-        text-decoration: none;
-        text-align: center;
-        font-size: 1.2rem;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-      }
-
-      .menu-container a:hover {
-        background-color: #cecdcd;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <img src="Assets/Alfamart-Emblem.png" alt="Alfamart Logo" />
-      <h1>Formulir Pengukuran & Rencana Anggaran</h1>
-    </header>
-
-    <div class="container">
-      <div class="menu-container">
-        <a href="survey_lokasi.html">Form Survey Lokasi (Pengukuran)</a>
-        <a href="rekap_rencana_anggaran.html"
-          >Rekapitulasi Rencana Anggaran Biaya</a
-        >
-        <a href="Estimasi_rab/index.html">Estimasi Rencana Anggaran Biaya</a>
-        <a href="undangan_aanwijzing.html">Undangan Peserta Aanwijzing</a>
-        <a href="berita_acara_aanwijzing.html">Berita Acara Aanwijzing</a>
-        <a href="presensi_aanwijzing.html">Presensi Aanwijzing</a>
-        <a href="penawaran_harga_kontraktor.html"
-          >Daftar Penawaran Harga Kontraktor</a
-        >
-        <a href="boq_rekapitulasi.html">Bill of Quantity (BoQ) Rekapitulasi</a>
-        <a href="boq_detail.html">Bill of Quantity (BoQ) Detail</a>
-        <a href="surat_penawaran.html">Surat Penawaran</a>
-        <a href="surat_perintah_kerja.html">Surat Perintah Kerja</a>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Alfamart</title>
+    <link rel="stylesheet" href="login_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <header class="login-header">
+            <img src="Assets/Alfamart-Emblem.png" alt="Alfamart Logo" class="login-logo">
+            <h1>Login</h1>
+        </header>
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+            <p id="login-message" class="login-message"></p>
+        </form>
     </div>
-
-    <script>
-      // Simple client-side check for demonstration.
-      // In a real application, this would involve checking for a session token or similar.
-      const isAuthenticated = sessionStorage.getItem('authenticated'); // Or check a cookie
-
-      if (!isAuthenticated) {
-          window.location.href = 'login.html'; // Redirect to login page if not authenticated
-      }
-    </script>
-  </body>
+    <script src="login_script.js"></script>
+</body>
 </html>
