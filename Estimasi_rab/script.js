@@ -383,7 +383,7 @@ window.addEventListener("load", async () => {
 
   // Load data from Google Spreadsheet via Apps Script
   // *** PENTING: GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA ***
-  const APPS_SCRIPT_DATA_URL = "https://script.google.com/macros/s/AKfycbyGLs6LMthu9iGaH3MXYTgyEp6rcKXzp0gAjNY1lYJA2rE7DwEeRH-WlZNqMa34An8q/exec"; 
+  const APPS_SCRIPT_DATA_URL = "https://script.google.com/macros/s/AKfycbzW8ngSsXSrNgYm7TCSu2rShbMp1vCkqQWOJ2G3d2A1hgYvgnLhppTeOjLhU_Li3kze/exec"; 
 
   try {
     const response = await fetch(APPS_SCRIPT_DATA_URL);

@@ -71,7 +71,7 @@
   </head>
   <body>
     <header>
-      <img src="Assets\Alfamart-Emblem.png" alt="Alfamart Logo" />
+      <img src="Assets/Alfamart-Emblem.png" alt="Alfamart Logo" />
       <h1>Formulir Pengukuran & Rencana Anggaran</h1>
     </header>
 
@@ -94,5 +94,15 @@
         <a href="surat_perintah_kerja.html">Surat Perintah Kerja</a>
       </div>
     </div>
+
+    <script>
+      // Simple client-side check for demonstration.
+      // In a real application, this would involve checking for a session token or similar.
+      const isAuthenticated = sessionStorage.getItem('authenticated'); // Or check a cookie
+
+      if (!isAuthenticated) {
+          window.location.href = 'login.html'; // Redirect to login page if not authenticated
+      }
+    </script>
   </body>
 </html>
