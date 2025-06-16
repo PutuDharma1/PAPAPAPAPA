@@ -579,7 +579,7 @@ window.addEventListener("load", async () => {
 
       // --- URL UNTUK PENGIRIMAN DATA FORM KE GOOGLE APPS SCRIPT (MUNGKIN SAMA DENGAN URL DATA) ---
       // Pastikan URL ini benar dan Apps Script disebarkan sebagai Web App
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxkbDYrxHr__Bz3rinIA5i6dwiq1yaDacmiyOV6T_Nxj4PaIIpp0zC29Zwa5OsX1LPU/exec"; // Perlu diganti jika URL berubah
+      const scriptURL = "https://script.google.com/macros/s/AKfycbz97ilSS_KySmdLTE80IfnorX3GTsN6-wXlh-pM1EQOUO-xQv6spsWYly-FS293lJo/exec"; // Perlu diganti jika URL berubah
 
       // Send data as JSON string with the correct Content-Type header 
       const response = await fetch(scriptURL, {
