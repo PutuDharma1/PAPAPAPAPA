@@ -454,7 +454,7 @@ window.addEventListener("load", async () => {
       calculateSubTotal(tbody); // Reset subtotal display
     });
     sipilTablesWrapper.classList.add("hidden");
-    meTablesWrapper.classList.add("hidden");
+    meTablesWrapper.classList.add("hiddewn");
     calculateGrandTotal(); // Reset grand total
 
     let activeWrapper = null;
@@ -579,7 +579,7 @@ window.addEventListener("load", async () => {
 
       // --- URL UNTUK PENGIRIMAN DATA FORM KE GOOGLE APPS SCRIPT (MUNGKIN SAMA DENGAN URL DATA) ---
       // Pastikan URL ini benar dan Apps Script disebarkan sebagai Web App
-      const scriptURL = "https://script.google.com/macros/s/AKfycbz97ilSS_KySmdLTE80IfnorX3GTsN6-wXlh-pM1EQOUO-xQv6spsWYly-FS293lJo/exec"; // Perlu diganti jika URL berubah
+      const scriptURL = "https://script.google.com/macros/s/AKfycbxswbtW1s-QqUlEZqENO2WHkK0wngSKJ1sesib8RZ7FA_mW7SQ0zjmvUUaCM0ZKr09X/exec"; // Perlu diganti jika URL berubah
 
       // Send data as JSON string with the correct Content-Type header 
       const response = await fetch(scriptURL, {
