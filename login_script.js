@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loginMessage = document.getElementById('login-message');
 
     // *** PENTING: GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA ***
-    const APPS_SCRIPT_LOGIN_DATA_URL = "https://script.google.com/macros/s/AKfycbxd3IuTELFcUm4H_XqBbpVyJrH5zQHzvpuk0rNKUslI1Jxj9MPfPKOiBNRQuu8qqeqG/exec"; // Contoh: "https://script.google.com/macros/s/AKfyc..."
+    const APPS_SCRIPT_LOGIN_DATA_URL = "https://script.google.com/macros/s/AKfycbzdl_VfkasiwPqTj7gHw_TDHnBpN30ia_LzEvC3yIa-RoWHDAgjUUqRuddBi9NGKFB7Dw/exec"; // Contoh: "https://script.google.com/macros/s/AKfyc..."
 
     // Fungsi untuk mengambil data login dari Google Apps Script
     async function fetchLoginData() {

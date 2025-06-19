@@ -383,7 +383,7 @@ window.addEventListener("load", async () => {
 
   // Load data from Google Spreadsheet via Apps Script
   // *** PENTING: GANTI URL INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA ***
-  const APPS_SCRIPT_DATA_URL = "https://script.google.com/macros/s/AKfycbzW8ngSsXSrNgYm7TCSu2rShbMp1vCkqQWOJ2G3d2A1hgYvgnLhppTeOjLhU_Li3kze/exec"; 
+  const APPS_SCRIPT_DATA_URL = "https://script.google.com/macros/s/AKfycbx2rtKmaZBb_iRBRL-DOemjVhAp3GaCwsthtwtfdtvdtuO2bRVlmONboB8wE-CZU7Hc/exec"; 
 
   try {
     const response = await fetch(APPS_SCRIPT_DATA_URL);
@@ -579,7 +579,7 @@ window.addEventListener("load", async () => {
 
       // --- URL UNTUK PENGIRIMAN DATA FORM KE GOOGLE APPS SCRIPT (MUNGKIN SAMA DENGAN URL DATA) ---
       // Pastikan URL ini benar dan Apps Script disebarkan sebagai Web App
-      const scriptURL = "https://script.google.com/macros/s/AKfycbxswbtW1s-QqUlEZqENO2WHkK0wngSKJ1sesib8RZ7FA_mW7SQ0zjmvUUaCM0ZKr09X/exec"; // Perlu diganti jika URL berubah
+      const scriptURL = "https://script.google.com/macros/s/AKfycbzPubDTa7E2gT5HeVLv9edAcn1xaTiT3J4BtAVYqaqiFAvFtp1qovTXpqpm-VuNOxQJ/exec"; // Perlu diganti jika URL berubah
 
       // Send data as JSON string with the correct Content-Type header 
       const response = await fetch(scriptURL, {
