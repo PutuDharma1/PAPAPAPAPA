@@ -82,7 +82,7 @@
         </select>
 
         <label for="lingkup_pekerjaan">Lingkup Pekerjaan:</label>
-        <select name="Lingkup Pekerjaan" id="lingkup_pekerjaan">
+        <select name="Lingkup_Pekerjaan" id="lingkup_pekerjaan">
           <option value="">-- Pilih Lingkup Pekerjaan --</option>
           <option value="Sipil">Sipil</option>
           <option value="ME">ME</option>
@@ -92,8 +92,9 @@
         <input
           type="number"
           id="luas_bangunan"
-          name="Luas Bangunan"
+          name="Luas_Bangunan"
           placeholder="Masukan Luas Bangunan"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
           required
         />
 
@@ -101,10 +102,11 @@
         <input
           type="number"
           id="luas_terbangunan"
-          name="Luas Terbangunan"
+          name="Luas_Terbangunan"
           placeholder="Masukan Luas Terbangunan"
           min="0"
           step="0.01"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
           required
         />
 
@@ -112,10 +114,11 @@
         <input
           type="number"
           id="luas_area_terbuka_parkir"
-          name="Luas Area Terbuka / Area Parkir"
+          name="Luas_Area_Terbuka_Area_Parkir"
           placeholder="Masukan Luas Area Terbuka / Area Parkir"
           min="0"
           step="0.01"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
           required
         />
 
@@ -123,10 +126,11 @@
         <input
           type="number"
           id="luas_area_sales"
-          name="Luas Area Sales"
+          name="Luas_Area_Sales"
           placeholder="Masukan Luas Area Sales"
           min="0"
           step="0.01"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
           required
         />
 
@@ -134,10 +138,11 @@
         <input
           type="number"
           id="luas_gudang"
-          name="Luas Gudang"
+          name="Luas_Gudang"
           placeholder="Masukan Luas Gudang"
           min="0"
           step="0.01"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
           required
         />
 
@@ -150,7 +155,7 @@
         <input
           type="date"
           id="waktu_pelaksanaan"
-          name="Waktu Pelaksanaan"
+          name="Waktu_Pelaksanaan"
           required
         />
 
