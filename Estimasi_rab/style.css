@@ -149,9 +149,13 @@ table tbody td select {
   border: 1px solid #ddd;
   background-color: white;
   position: absolute;
-  width: 100%;
+  /* MODIFIKASI BAGIAN INI */
+  width: auto; /* Biarkan lebar menyesuaikan konten */
+  min-width: 350px; /* Atur lebar minimal agar tidak sempit */
+  white-space: nowrap; /* Mencegah tulisan turun baris */
+  /* BATAS MODIFIKASI */
   z-index: 100;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Stronger shadow for suggestions */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   top: 100%;
   left: 0;
