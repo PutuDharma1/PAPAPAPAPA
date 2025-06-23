@@ -329,14 +329,14 @@ window.addEventListener("load", async () => {
     updateAllRowNumbersAndTotals();
   });
 
-  currentResetButton.addEventListener("click", () => {
-    form.reset();
-    messageDiv.style.display = "none";
-    document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
-    sipilTablesWrapper.classList.add("hidden");
-    meTablesWrapper.classList.add("hidden");
-    calculateGrandTotal();
-  });
+currentResetButton.addEventListener("click", () => {
+  form.reset();
+  // messageDiv.style.display = "none"; // Baris ini sudah tidak ada
+  document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
+  sipilTablesWrapper.classList.add("hidden");
+  meTablesWrapper.classList.add("hidden");
+  calculateGrandTotal();
+});
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
