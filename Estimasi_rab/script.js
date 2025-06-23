@@ -376,9 +376,14 @@ currentResetButton.addEventListener("click", () => {
       const data = await response.json();
 
       if (data.status === "success") {
-        messageDiv.textContent = data.message || "Data berhasil terkirim!";
+        messageDiv.textContent = data.message || "Data berhasil terkirim! Anda akan diarahkan ke Beranda.";
         messageDiv.style.backgroundColor = "#28a745";
-        currentResetButton.click();
+        
+        // Alihkan ke homepage setelah 2 detik
+        setTimeout(() => {
+            window.location.href = '../Homepage/index.html';
+        }, 2000);
+
       } else {
         throw new Error(data.message || "Pengiriman data gagal.");
       }

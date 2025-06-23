@@ -288,14 +288,61 @@ table tbody td select {
     padding: 20px;
   }
 
+  /* ▼▼▼ TAMBAHKAN/MODIFIKASI ATURAN INI ▼▼▼ */
+  header {
+    flex-direction: column; /* Stack logo dan judul secara vertikal */
+    padding: 20px;         /* Sesuaikan padding untuk tampilan baru */
+    height: auto;          /* Biarkan tinggi header menyesuaikan konten */
+  }
+
   header h1 {
     font-size: 1.8rem;
+    text-align: center; /* Pastikan judul tetap di tengah */
   }
 
   .header-logo {
-    width: 50px;
-    margin-right: 10px;
-    left: 10px;
+    position: static;      /* Hapus posisi absolut */
+    transform: none;       /* Hapus transformasi */
+    margin-right: 0;       /* Hapus margin kanan */
+    margin-bottom: 10px;   /* Beri jarak bawah antara logo dan judul */
+    width: 60px;           /* Sedikit sesuaikan ukuran logo */
+    left: auto;            /* Hapus properti 'left' */
+  }
+  /* ▲▲▲ BATAS PERUBAHAN ▲▲▲ */
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  table {
+    min-width: 650px;
+  }
+
+  table th,
+  table td {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+
+  .form-container button {
+    padding: 10px 15px;
+    font-size: 1rem;
+  }
+
+  .back-btn {
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+  }
+  .grand-total-box {
+    padding: 15px;
+  }
+  .grand-total-box span {
+    font-size: 1.5rem;
   }
 
   .button-group {
