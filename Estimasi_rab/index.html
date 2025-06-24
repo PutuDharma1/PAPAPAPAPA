@@ -35,7 +35,9 @@
           type="text"
           id="lokasi"
           name="Lokasi"
-          placeholder="Masukan Lokasi"
+          placeholder="Masukan Lokasi (4 ANGKA KODE TOKO)"
+          oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)"
+          maxlength="4"
           required
         />
 
@@ -49,7 +51,6 @@
         <label for="cabang">Cabang:</label>
         <select name="Cabang" id="cabang" required>
             <option value="">-- Pilih Cabang --</option>
-            <option value="ACEH">ACEH</option>
             <option value="BALARAJA">BALARAJA</option>
             <option value="BALI">BALI</option>
             <option value="BANDUNG 1">BANDUNG 1</option>
@@ -98,72 +99,56 @@
 
         <label for="luas_bangunan">Luas Bangunan (m²):</label>
         <input
-          type="number"
+          type="text"
+          inputmode="decimal"
           id="luas_bangunan"
           name="Luas_Bangunan"
-          placeholder="Masukan Luas Bangunan"
-          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+          placeholder="Masukan Luas Bangunan (e.g., 50.25)"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{2})\d+/, '$1')"
           required
         />
 
         <label for="luas_terbangunan">Luas Terbangunan (m²):</label>
         <input
-          type="number"
+          type="text"
+          inputmode="decimal"
           id="luas_terbangunan"
           name="Luas_Terbangunan"
-          placeholder="Masukan Luas Terbangunan"
-          min="0"
-          step="0.01"
-          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+          placeholder="Masukan Luas Terbangunan (e.g., 45.50)"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{2})\d+/, '$1')"
           required
         />
 
         <label for="luas_area_terbuka_parkir">Luas Area Terbuka / Area Parkir (m²):</label>
         <input
-          type="number"
+          type="text"
+          inputmode="decimal"
           id="luas_area_terbuka_parkir"
           name="Luas_Area_Terbuka_Area_Parkir"
-          placeholder="Masukan Luas Area Terbuka / Area Parkir"
-          min="0"
-          step="0.01"
-          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+          placeholder="Masukan Luas Area Terbuka / Area Parkir (e.g., 20.00)"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{2})\d+/, '$1')"
           required
         />
 
         <label for="luas_area_sales">Luas Area Sales (m²):</label>
         <input
-          type="number"
+          type="text"
+          inputmode="decimal"
           id="luas_area_sales"
           name="Luas_Area_Sales"
-          placeholder="Masukan Luas Area Sales"
-          min="0"
-          step="0.01"
-          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+          placeholder="Masukan Luas Area Sales (e.g., 30.75)"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{2})\d+/, '$1')"
           required
         />
 
         <label for="luas_gudang">Luas Gudang (m²):</label>
         <input
-          type="number"
+          type="text"
+          inputmode="decimal"
           id="luas_gudang"
           name="Luas_Gudang"
-          placeholder="Masukan Luas Gudang"
-          min="0"
-          step="0.01"
-          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-          required
-        />
-
-        <label for="tanggal">Tanggal:</label>
-        <input type="date" id="tanggal" name="Tanggal" required />
-
-        <label for="waktu_pelaksanaan"
-          >Waktu Pelaksanaan (Estimasi Selesai):</label
-        >
-        <input
-          type="date"
-          id="waktu_pelaksanaan"
-          name="Waktu_Pelaksanaan"
+          placeholder="Masukan Luas Gudang (e.g., 15.20)"
+          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{2})\d+/, '$1')"
           required
         />
 

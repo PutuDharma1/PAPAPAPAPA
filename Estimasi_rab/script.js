@@ -133,7 +133,9 @@ const createBoQRow = (category, scope) => {
   row.classList.add("boq-item-row");
   row.dataset.category = category;
   row.dataset.scope = scope;
-  row.innerHTML = `<td><span class="row-number"></span></td><td><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td><select class="satuan" name="Satuan_Item" required><option value="Ls">Ls</option><option value="M1">M1</option><option value="M3">M3</option><option value="Btg">Btg</option><option value="M2">M2</option><option value="Bh">Bh</option><option value="Unit">Unit</option><option value="Kg">Kg</option><option value="sel">sel</option><option value="ttk">ttk</option><option value="m">m</option></select></td><td><input type="number" class="volume" name="Volume_Item" value="1.00" min="0" step="0.01" /></td><td><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required /></td><td><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required /></td><td><input type="text" class="total-material" disabled /></td><td><input type="text" class="total-upah" disabled /></td><td><input type="text" class="total-harga" disabled /></td><td><button type="button" class="delete-row-btn">Hapus</button></td>`;
+  // --- PERUBAHAN DI SINI: value="1.00" diubah menjadi value="0.00" ---
+  row.innerHTML = `<td><span class="row-number"></span></td><td><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td><select class="satuan" name="Satuan_Item" required disabled><option value="Ls">Ls</option><option value="M1">M1</option><option value="M3">M3</option><option value="Btg">Btg</option><option value="M2">M2</option><option value="Bh">Bh</option><option value="Unit">Unit</option><option value="Kg">Kg</option><option value="sel">sel</option><option value="ttk">ttk</option><option value="m">m</option></select></td><td><input type="number" class="volume" name="Volume_Item" value="0.00" min="0" step="0.01" /></td><td><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required readonly /></td><td><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required readonly /></td><td><input type="text" class="total-material" disabled /></td><td><input type="text" class="total-upah" disabled /></td><td><input type="text" class="total-harga" disabled /></td><td><button type="button" class="delete-row-btn">Hapus</button></td>`;
+  // --- AKHIR PERUBAHAN ---
 
   [row.querySelector(".volume"), row.querySelector(".harga-material"), row.querySelector(".harga-upah")].forEach((input) => {
     input.addEventListener("input", () => calculateTotalPrice(input));
@@ -145,6 +147,7 @@ const createBoQRow = (category, scope) => {
   row.querySelector('.jenis-pekerjaan').addEventListener('change', (e) => autoFillPrices(e.target));
   return row;
 };
+
 
 const updateAllRowNumbersAndTotals = () => {
   document.querySelectorAll(".boq-table-body:not(.hidden)").forEach((tbody) => {
