@@ -136,9 +136,7 @@ const createBoQRow = (category, scope) => {
   row.dataset.category = category;
   row.dataset.scope = scope;
   
-  // --- PERUBAHAN: Menambahkan class pada <td> ---
   row.innerHTML = `<td class="col-no"><span class="row-number"></span></td><td class="col-jenis-pekerjaan"><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td class="col-satuan"><input type="text" class="satuan" name="Satuan_Item" required readonly /></td><td class="col-volume"><input type="number" class="volume" name="Volume_Item" value="0.00" min="0" step="0.01" /></td><td class="col-harga"><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required readonly /></td><td class="col-harga"><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required readonly /></td><td class="col-total"><input type="text" class="total-material" disabled /></td><td class="col-total"><input type="text" class="total-upah" disabled /></td><td class="col-total-harga"><input type="text" class="total-harga" disabled /></td><td class="col-aksi"><button type="button" class="delete-row-btn">Hapus</button></td>`;
-  // --- BATAS PERUBAHAN ---
 
   [row.querySelector(".volume"), row.querySelector(".harga-material"), row.querySelector(".harga-upah")].forEach((input) => {
     input.addEventListener("input", () => calculateTotalPrice(input));
@@ -196,8 +194,6 @@ const calculateGrandTotal = () => {
 };
 
 async function initializePage() {
-  console.log("Page is being initialized...");
-  
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPubDTa7E2gT5HeVLv9edAcn1xaTiT3J4BtAVYqaqiFAvFtp1qovTXpqpm-VuNOxQJ/exec"; 
 
   form = document.getElementById("form");
@@ -208,6 +204,13 @@ async function initializePage() {
   sipilTablesWrapper = document.getElementById("sipil-tables-wrapper");
   meTablesWrapper = document.getElementById("me-tables-wrapper");
   currentResetButton = form.querySelector("button[type='reset']");
+
+  // === PERUBAHAN 1: Nonaktifkan dropdown dan tunjukkan pesan loading ===
+  lingkupPekerjaanSelect.disabled = true;
+  messageDiv.textContent = 'Memuat data harga, mohon tunggu...';
+  messageDiv.style.display = 'block';
+  messageDiv.style.backgroundColor = '#007bff';
+  messageDiv.style.color = 'white';
   
   const populateFormWithHistory = (data, message) => {
       console.log("Populating form with rejected data:", data);
@@ -257,15 +260,10 @@ async function initializePage() {
   const userEmail = sessionStorage.getItem('loggedInUserEmail');
   if (userEmail) {
       try {
-          messageDiv.textContent = 'Memeriksa status pengajuan...';
-          messageDiv.style.display = 'block';
           const checkUrl = `${APPS_SCRIPT_URL}?action=checkUserStatus&email=${encodeURIComponent(userEmail)}`;
           const response = await fetch(checkUrl);
           const result = await response.json();
-          messageDiv.style.display = 'none';
           
-          console.log("User submissions response:", result);
-
           if (result.error) {
               throw new Error(result.error);
           }
@@ -282,10 +280,6 @@ async function initializePage() {
           
       } catch (error) {
           console.error("Gagal memeriksa status pengajuan:", error);
-          messageDiv.textContent = "Gagal memuat status pengajuan terakhir.";
-          messageDiv.style.display = 'block';
-          messageDiv.style.backgroundColor = '#dc3545';
-          messageDiv.style.color = 'white';
       }
   }
 
@@ -295,8 +289,16 @@ async function initializePage() {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     categorizedPrices = await response.json();
     console.log("Data harga berhasil dimuat.");
+    
+    // === PERUBAHAN 2: Aktifkan kembali dropdown dan sembunyikan pesan loading setelah data siap ===
+    lingkupPekerjaanSelect.disabled = false;
+    messageDiv.style.display = 'none';
+
   } catch (error) {
     console.error('Error loading price data:', error);
+    messageDiv.textContent = 'Gagal memuat data harga. Mohon muat ulang halaman.';
+    messageDiv.style.backgroundColor = '#dc3545';
+    // Biarkan dropdown nonaktif jika terjadi error
   }
 
   document.querySelectorAll(".add-row-btn").forEach((button) => {
@@ -418,6 +420,5 @@ async function initializePage() {
   });
 }
 
-window.addEventListener("pageshow", function(event) {
-    initializePage();
-});
+// Mengganti 'pageshow' dengan 'DOMContentLoaded' untuk eksekusi yang lebih standar dan andal
+document.addEventListener("DOMContentLoaded", initializePage);
