@@ -100,18 +100,18 @@ header h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1100px; /* Diperbesar untuk mengakomodasi lebar kolom baru */
+  min-width: 1100px;
   margin-bottom: 0;
-  table-layout: fixed; /* Penting untuk menjaga lebar kolom */
+  table-layout: fixed; /* Properti kunci untuk lebar kolom */
 }
 
 table th,
 table td {
   border: 1px solid #e0e0e0;
-  padding: 12px 8px; /* Padding disesuaikan */
+  padding: 12px 8px;
   text-align: center;
   font-size: 0.95rem;
-  word-wrap: break-word; /* Membantu memecah teks panjang */
+  word-wrap: break-word;
 }
 
 table thead th {
@@ -133,13 +133,13 @@ table tbody td select {
 }
 
 /* ▼▼▼ ATURAN LEBAR KOLOM DIPERBARUI ▼▼▼ */
-.col-no { width: 2%; } /* Dikecilkan maksimal */
-.col-jenis-pekerjaan { width: 27%; } /* Dilebarkan untuk menyerap sisa ruang */
-.col-satuan { width: 6%; } 
+.col-no { width: 1%; } 
+.col-satuan { width: 1%; } 
+.col-jenis-pekerjaan { width: 30%; } 
 .col-volume { width: 7%; }
-.col-harga { width: 10%; } 
-.col-total { width: 11%; } 
-.col-total-harga { width: 12%; } 
+.col-harga { width: 11%; } 
+.col-total { width: 12%; } 
+.col-total-harga { width: 13%; } 
 .col-aksi { width: 9%; }
 /* ▲▲▲ BATAS PEMBARUAN ▲▲▲ */
 
