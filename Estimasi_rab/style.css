@@ -138,18 +138,18 @@ table {
   table-layout: fixed !important; /* Memaksa tabel mematuhi lebar yang ditentukan */
 }
 
-.col-no { width: 50px; } /* Atur lebar tetap untuk kolom NO */
-.col-satuan { width: 70px; } /* Atur lebar tetap untuk kolom Satuan */
-.col-aksi { width: 90px; }   /* Atur lebar tetap untuk kolom Aksi */
+.col-no { width: 50px; } 
+.col-satuan { width: 70px; } 
+.col-aksi { width: 90px; }   
 
-/* Biarkan sisa kolom menyesuaikan secara fleksibel */
-.col-jenis-pekerjaan { width: 30%; }
+/* Sisa kolom diatur dengan persentase */
+.col-jenis-pekerjaan { width: 24%; } /* Dikecilkan untuk memberi ruang */
 .col-volume { width: 8%; }
 .col-harga { width: 12%; }
-.col-total { width: 12%; }
-.col-total-harga { width: 14%; }
+.col-total { width: 14%; } /* Dilebarkan sesuai permintaan */
+.col-total-harga { width: 16%; } /* Dilebarkan sesuai permintaan */
 /* ======================================= */
-/* ▲▲▲ BATAS PENAMBAHAN ▲▲▲ */
+/* ▲▲▲ BATAS ATURAN LEBAR KOLOM ▲▲▲ */
 /* ======================================= */
 
 
