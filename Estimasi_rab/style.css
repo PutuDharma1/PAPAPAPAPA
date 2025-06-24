@@ -102,7 +102,6 @@ table {
   border-collapse: collapse;
   min-width: 1100px;
   margin-bottom: 0;
-  table-layout: fixed; /* Properti kunci untuk lebar kolom */
 }
 
 table th,
@@ -132,16 +131,26 @@ table tbody td select {
   font-size: 0.9rem;
 }
 
-/* ▼▼▼ ATURAN LEBAR KOLOM DIPERBARUI ▼▼▼ */
-.col-no { width: 1%; } 
-.col-satuan { width: 1%; } 
-.col-jenis-pekerjaan { width: 30%; } 
-.col-volume { width: 7%; }
-.col-harga { width: 11%; } 
-.col-total { width: 12%; } 
-.col-total-harga { width: 13%; } 
-.col-aksi { width: 9%; }
-/* ▲▲▲ BATAS PEMBARUAN ▲▲▲ */
+/* ======================================= */
+/* ▼▼▼ ATURAN LEBAR KOLOM TABEL ▼▼▼ */
+/* ======================================= */
+table {
+  table-layout: fixed !important; /* Memaksa tabel mematuhi lebar yang ditentukan */
+}
+
+.col-no { width: 50px; } /* Atur lebar tetap untuk kolom NO */
+.col-satuan { width: 70px; } /* Atur lebar tetap untuk kolom Satuan */
+.col-aksi { width: 90px; }   /* Atur lebar tetap untuk kolom Aksi */
+
+/* Biarkan sisa kolom menyesuaikan secara fleksibel */
+.col-jenis-pekerjaan { width: 30%; }
+.col-volume { width: 8%; }
+.col-harga { width: 12%; }
+.col-total { width: 12%; }
+.col-total-harga { width: 14%; }
+/* ======================================= */
+/* ▲▲▲ BATAS PENAMBAHAN ▲▲▲ */
+/* ======================================= */
 
 
 /* Custom styles for searchable dropdown (Jenis Pekerjaan) */
@@ -327,10 +336,6 @@ table tbody td select {
   .button-group {
     flex-direction: column;
     gap: 10px;
-  }
-
-  table {
-    min-width: 1100px;
   }
 
   table th,
