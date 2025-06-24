@@ -10,7 +10,6 @@ let sipilTablesWrapper;
 let meTablesWrapper;
 let currentResetButton;
 let categorizedPrices = {};
-// Variabel baru untuk menampung daftar kode toko
 let pendingStoreCodes = [];
 let approvedStoreCodes = [];
 
@@ -136,7 +135,10 @@ const createBoQRow = (category, scope) => {
   row.classList.add("boq-item-row");
   row.dataset.category = category;
   row.dataset.scope = scope;
-  row.innerHTML = `<td><span class="row-number"></span></td><td><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td><select class="satuan" name="Satuan_Item" required disabled><option value="Ls">Ls</option><option value="M1">M1</option><option value="M3">M3</option><option value="Btg">Btg</option><option value="M2">M2</option><option value="Bh">Bh</option><option value="Unit">Unit</option><option value="Kg">Kg</option><option value="sel">sel</option><option value="ttk">ttk</option><option value="m">m</option></select></td><td><input type="number" class="volume" name="Volume_Item" value="0.00" min="0" step="0.01" /></td><td><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required readonly /></td><td><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required readonly /></td><td><input type="text" class="total-material" disabled /></td><td><input type="text" class="total-upah" disabled /></td><td><input type="text" class="total-harga" disabled /></td><td><button type="button" class="delete-row-btn">Hapus</button></td>`;
+  
+  // --- PERUBAHAN: Menambahkan class pada <td> ---
+  row.innerHTML = `<td class="col-no"><span class="row-number"></span></td><td class="col-jenis-pekerjaan"><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td class="col-satuan"><input type="text" class="satuan" name="Satuan_Item" required readonly /></td><td class="col-volume"><input type="number" class="volume" name="Volume_Item" value="0.00" min="0" step="0.01" /></td><td class="col-harga"><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required readonly /></td><td class="col-harga"><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required readonly /></td><td class="col-total"><input type="text" class="total-material" disabled /></td><td class="col-total"><input type="text" class="total-upah" disabled /></td><td class="col-total-harga"><input type="text" class="total-harga" disabled /></td><td class="col-aksi"><button type="button" class="delete-row-btn">Hapus</button></td>`;
+  // --- BATAS PERUBAHAN ---
 
   [row.querySelector(".volume"), row.querySelector(".harga-material"), row.querySelector(".harga-upah")].forEach((input) => {
     input.addEventListener("input", () => calculateTotalPrice(input));
@@ -193,13 +195,11 @@ const calculateGrandTotal = () => {
   if (grandTotalAmount) grandTotalAmount.textContent = formatRupiah(total);
 };
 
-// --- MAIN SCRIPT EXECUTION ---
-window.addEventListener("load", async () => {
-  console.log("Window loaded: Initializing script...");
+async function initializePage() {
+  console.log("Page is being initialized...");
   
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPubDTa7E2gT5HeVLv9edAcn1xaTiT3J4BtAVYqaqiFAvFtp1qovTXpqpm-VuNOxQJ/exec"; 
 
-  // Inisialisasi variabel global
   form = document.getElementById("form");
   submitButton = document.getElementById("submit-button");
   messageDiv = document.getElementById("message");
@@ -211,6 +211,11 @@ window.addEventListener("load", async () => {
   
   const populateFormWithHistory = (data, message) => {
       console.log("Populating form with rejected data:", data);
+      form.reset();
+      document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
+      sipilTablesWrapper.classList.add("hidden");
+      meTablesWrapper.classList.add("hidden");
+      
       for (const key in data) {
           if (data.hasOwnProperty(key)) {
               const elementName = key.replace(/_/g, " ");
@@ -224,8 +229,6 @@ window.addEventListener("load", async () => {
           }
       }
       
-      document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
-
       for (let i = 1; i <= 50; i++) {
           if (data[`Jenis_Pekerjaan_${i}`]) {
               const category = data[`Kategori_Pekerjaan_${i}`];
@@ -233,13 +236,13 @@ window.addEventListener("load", async () => {
               const targetTbody = document.querySelector(`.boq-table-body[data-category="${category}"][data-scope="${scope}"]`);
               if (targetTbody) {
                   const newRow = createBoQRow(category, scope);
+                  targetTbody.appendChild(newRow);
                   newRow.querySelector('.jenis-pekerjaan').value = data[`Jenis_Pekerjaan_${i}`];
                   newRow.querySelector('.jenis-pekerjaan-search-input').value = data[`Jenis_Pekerjaan_${i}`];
                   newRow.querySelector('.satuan').value = data[`Satuan_Item_${i}`];
                   newRow.querySelector('.volume').value = data[`Volume_Item_${i}`];
                   newRow.querySelector('.harga-material').value = data[`Harga_Material_Item_${i}`];
                   newRow.querySelector('.harga-upah').value = data[`Harga_Upah_Item_${i}`];
-                  targetTbody.appendChild(newRow);
                   populateJenisPekerjaanOptionsForNewRow(newRow);
               }
           }
@@ -251,13 +254,15 @@ window.addEventListener("load", async () => {
       messageDiv.style.color = 'white';
   };
 
-  // --- Logika Pengecekan Status (diperbarui total) ---
   const userEmail = sessionStorage.getItem('loggedInUserEmail');
   if (userEmail) {
       try {
+          messageDiv.textContent = 'Memeriksa status pengajuan...';
+          messageDiv.style.display = 'block';
           const checkUrl = `${APPS_SCRIPT_URL}?action=checkUserStatus&email=${encodeURIComponent(userEmail)}`;
           const response = await fetch(checkUrl);
           const result = await response.json();
+          messageDiv.style.display = 'none';
           
           console.log("User submissions response:", result);
 
@@ -265,36 +270,14 @@ window.addEventListener("load", async () => {
               throw new Error(result.error);
           }
 
-          // Isi daftar kode toko yang aktif
           if (result.active_codes) {
               pendingStoreCodes = result.active_codes.pending || [];
               approvedStoreCodes = result.active_codes.approved || [];
           }
 
-          // Isi form jika ada data yang ditolak
           if (result.last_rejected_data) {
               const rejectedStatus = result.last_rejected_data.Status;
               populateFormWithHistory(result.last_rejected_data, `Formulir Anda sebelumnya <strong>${rejectedStatus}</strong>. Silakan periksa, revisi, dan kirim ulang.`);
-          }
-
-          // Tampilkan pesan informatif jika ada pengajuan aktif
-          if (pendingStoreCodes.length > 0 || approvedStoreCodes.length > 0) {
-              let infoMessage = "Informasi Pengajuan Anda: <ul style='text-align:left; margin-left: 20px; margin-top: 10px;'>";
-              if (pendingStoreCodes.length > 0) {
-                  infoMessage += `<li>Kode toko sedang direview: <strong>${pendingStoreCodes.join(', ')}</strong></li>`;
-              }
-              if (approvedStoreCodes.length > 0) {
-                  infoMessage += `<li>Kode toko sudah disetujui: <strong>${approvedStoreCodes.join(', ')}</strong></li>`;
-              }
-              infoMessage += "</ul>Anda dapat membuat pengajuan baru untuk kode toko yang berbeda.";
-              
-              // Hanya tampilkan pesan ini jika tidak ada form ditolak yang sedang ditampilkan
-              if (!result.last_rejected_data) {
-                  messageDiv.innerHTML = infoMessage;
-                  messageDiv.style.display = 'block';
-                  messageDiv.style.backgroundColor = '#17a2b8';
-                  messageDiv.style.color = 'white';
-              }
           }
           
       } catch (error) {
@@ -306,7 +289,6 @@ window.addEventListener("load", async () => {
       }
   }
 
-  // --- Lanjutan Inisialisasi Form ---
   const APPS_SCRIPT_DATA_URL = "https://script.google.com/macros/s/AKfycbx2rtKmaZBb_iRBRL-DOemjVhAp3GaCwsthtwtfdtvdtuO2bRVlmONboB8wE-CZU7Hc/exec"; 
   try {
     const response = await fetch(APPS_SCRIPT_DATA_URL);
@@ -315,7 +297,6 @@ window.addEventListener("load", async () => {
     console.log("Data harga berhasil dimuat.");
   } catch (error) {
     console.error('Error loading price data:', error);
-    // Tidak menampilkan error ke pengguna agar tidak membingungkan
   }
 
   document.querySelectorAll(".add-row-btn").forEach((button) => {
@@ -353,17 +334,16 @@ window.addEventListener("load", async () => {
 
   currentResetButton.addEventListener("click", () => {
     if (confirm("Apakah Anda yakin ingin mengulang dan mengosongkan semua isian form?")) {
-        window.location.reload(); // Cara paling efektif untuk reset total
+        window.location.reload();
     }
   });
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    // --- Validasi Duplikasi Kode Toko (Diperbarui) ---
-    const currentStoreCode = String(document.getElementById('lokasi').value);
+    const currentStoreCode = String(document.getElementById('lokasi').value).toUpperCase();
 
-    if (approvedStoreCodes.includes(currentStoreCode)) {
+    if (approvedStoreCodes.map(code => String(code).toUpperCase()).includes(currentStoreCode)) {
         messageDiv.textContent = `Error: Kode toko ${currentStoreCode} sudah pernah diajukan dan disetujui.`;
         messageDiv.style.display = "block";
         messageDiv.style.backgroundColor = "#dc3545";
@@ -371,7 +351,7 @@ window.addEventListener("load", async () => {
         return;
     }
     
-    if (pendingStoreCodes.includes(currentStoreCode)) {
+    if (pendingStoreCodes.map(code => String(code).toUpperCase()).includes(currentStoreCode)) {
         messageDiv.textContent = `Error: Kode toko ${currentStoreCode} sudah memiliki pengajuan yang sedang direview.`;
         messageDiv.style.display = "block";
         messageDiv.style.backgroundColor = "#ffc107";
@@ -390,6 +370,7 @@ window.addEventListener("load", async () => {
       new FormData(this).forEach((value, key) => formDataToSend[key] = value);
         
       formDataToSend["Email_Pembuat"] = sessionStorage.getItem('loggedInUserEmail') || '';
+      formDataToSend["Lokasi"] = currentStoreCode;
 
       let itemCounter = 0;
       document.querySelectorAll(".boq-table-body:not(.hidden) .boq-item-row").forEach(row => {
@@ -435,4 +416,8 @@ window.addEventListener("load", async () => {
       submitButton.disabled = false;
     }
   });
+}
+
+window.addEventListener("pageshow", function(event) {
+    initializePage();
 });

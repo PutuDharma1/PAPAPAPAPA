@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Estimasi Rencana Anggaran Biaya - Alfamart</title>
     <script>
       // Security Check: Redirect to login if not authenticated
@@ -35,12 +38,11 @@
           type="text"
           id="lokasi"
           name="Lokasi"
-          placeholder="Masukan Lokasi (4 ANGKA KODE TOKO)"
-          oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)"
+          placeholder="Masukan Lokasi (Max 4 Karakter Alfanumerik)"
+          oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '').slice(0, 4).toUpperCase()"
           maxlength="4"
           required
         />
-
         <label for="proyek">Proyek:</label>
         <select name="Proyek" id="proyek" required>
           <option value="">-- Pilih Jenis Proyek --</option>
