@@ -10,7 +10,9 @@ let sipilTablesWrapper;
 let meTablesWrapper;
 let currentResetButton;
 let categorizedPrices = {};
-let lastApprovedStoreCode = null; // Variabel KUNCI untuk menyimpan kode toko yang sudah disetujui
+// Variabel baru untuk menampung daftar kode toko
+let pendingStoreCodes = [];
+let approvedStoreCodes = [];
 
 // --- Helper Functions ---
 const formatRupiah = (number) => {
@@ -206,21 +208,11 @@ window.addEventListener("load", async () => {
   sipilTablesWrapper = document.getElementById("sipil-tables-wrapper");
   meTablesWrapper = document.getElementById("me-tables-wrapper");
   currentResetButton = form.querySelector("button[type='reset']");
-
-  const disableForm = (message) => {
-      messageDiv.innerHTML = message;
-      messageDiv.style.display = 'block';
-      messageDiv.style.backgroundColor = '#ffc107'; // Kuning untuk informasi
-      messageDiv.style.color = 'black';
-      form.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
-      if(currentResetButton) currentResetButton.disabled = false;
-  };
   
   const populateFormWithHistory = (data, message) => {
       console.log("Populating form with rejected data:", data);
       for (const key in data) {
           if (data.hasOwnProperty(key)) {
-              // Mengganti underscore dengan spasi agar sesuai dengan `name` di HTML
               const elementName = key.replace(/_/g, " ");
               const element = document.getElementsByName(elementName)[0];
               if (element) {
@@ -255,11 +247,11 @@ window.addEventListener("load", async () => {
       updateAllRowNumbersAndTotals();
       messageDiv.innerHTML = message;
       messageDiv.style.display = 'block';
-      messageDiv.style.backgroundColor = '#dc3545'; // Merah untuk penolakan
+      messageDiv.style.backgroundColor = '#dc3545';
       messageDiv.style.color = 'white';
   };
 
-  // --- Logika Pengecekan Status Pengajuan Terakhir ---
+  // --- Logika Pengecekan Status (diperbarui total) ---
   const userEmail = sessionStorage.getItem('loggedInUserEmail');
   if (userEmail) {
       try {
@@ -267,37 +259,44 @@ window.addEventListener("load", async () => {
           const response = await fetch(checkUrl);
           const result = await response.json();
           
-          console.log("User status check response:", result);
+          console.log("User submissions response:", result);
 
-          const status = result.status;
-          
-          const statusEnum = {
-              WAITING_COORDINATOR: "Menunggu Persetujuan Koordinator",
-              WAITING_MANAGER: "Menunggu Persetujuan Manajer",
-              REJECTED_COORDINATOR: "Ditolak oleh Koordinator",
-              REJECTED_MANAGER: "Ditolak oleh Manajer",
-              APPROVED: "Disetujui"
-          };
+          if (result.error) {
+              throw new Error(result.error);
+          }
 
-          if (status === statusEnum.WAITING_COORDINATOR || status === statusEnum.WAITING_MANAGER) {
-              disableForm(`Formulir Anda sedang dalam proses review dengan status: <strong>${status}</strong>. Harap tunggu.`);
-              return; 
-          } 
-          else if (status === statusEnum.REJECTED_COORDINATOR || status === statusEnum.REJECTED_MANAGER) {
-              if (result.data) {
-                  populateFormWithHistory(result.data, `Formulir Anda <strong>${status}</strong>. Silakan periksa, revisi, dan kirim ulang.`);
+          // Isi daftar kode toko yang aktif
+          if (result.active_codes) {
+              pendingStoreCodes = result.active_codes.pending || [];
+              approvedStoreCodes = result.active_codes.approved || [];
+          }
+
+          // Isi form jika ada data yang ditolak
+          if (result.last_rejected_data) {
+              const rejectedStatus = result.last_rejected_data.Status;
+              populateFormWithHistory(result.last_rejected_data, `Formulir Anda sebelumnya <strong>${rejectedStatus}</strong>. Silakan periksa, revisi, dan kirim ulang.`);
+          }
+
+          // Tampilkan pesan informatif jika ada pengajuan aktif
+          if (pendingStoreCodes.length > 0 || approvedStoreCodes.length > 0) {
+              let infoMessage = "Informasi Pengajuan Anda: <ul style='text-align:left; margin-left: 20px; margin-top: 10px;'>";
+              if (pendingStoreCodes.length > 0) {
+                  infoMessage += `<li>Kode toko sedang direview: <strong>${pendingStoreCodes.join(', ')}</strong></li>`;
               }
-          } 
-          else if (status === statusEnum.APPROVED) {
-              if (result.data && result.data.Lokasi) {
-                  lastApprovedStoreCode = result.data.Lokasi;
-                  messageDiv.innerHTML = `Pengajuan sebelumnya untuk kode toko <strong>${lastApprovedStoreCode}</strong> telah disetujui. Anda dapat membuat pengajuan baru untuk <strong>toko yang berbeda</strong>.`;
+              if (approvedStoreCodes.length > 0) {
+                  infoMessage += `<li>Kode toko sudah disetujui: <strong>${approvedStoreCodes.join(', ')}</strong></li>`;
+              }
+              infoMessage += "</ul>Anda dapat membuat pengajuan baru untuk kode toko yang berbeda.";
+              
+              // Hanya tampilkan pesan ini jika tidak ada form ditolak yang sedang ditampilkan
+              if (!result.last_rejected_data) {
+                  messageDiv.innerHTML = infoMessage;
                   messageDiv.style.display = 'block';
                   messageDiv.style.backgroundColor = '#17a2b8';
                   messageDiv.style.color = 'white';
               }
           }
-
+          
       } catch (error) {
           console.error("Gagal memeriksa status pengajuan:", error);
           messageDiv.textContent = "Gagal memuat status pengajuan terakhir.";
@@ -316,8 +315,7 @@ window.addEventListener("load", async () => {
     console.log("Data harga berhasil dimuat.");
   } catch (error) {
     console.error('Error loading price data:', error);
-    messageDiv.textContent = "Error memuat data harga. Beberapa fitur mungkin tidak berfungsi.";
-    messageDiv.style.backgroundColor = "#ce1e10";
+    // Tidak menampilkan error ke pengguna agar tidak membingungkan
   }
 
   document.querySelectorAll(".add-row-btn").forEach((button) => {
@@ -355,29 +353,30 @@ window.addEventListener("load", async () => {
 
   currentResetButton.addEventListener("click", () => {
     if (confirm("Apakah Anda yakin ingin mengulang dan mengosongkan semua isian form?")) {
-        form.reset();
-        document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
-        sipilTablesWrapper.classList.add("hidden");
-        meTablesWrapper.classList.add("hidden");
-        calculateGrandTotal();
-        messageDiv.style.display = "none";
-        lastApprovedStoreCode = null;
-        form.querySelectorAll('input, select, button').forEach(el => el.disabled = false);
+        window.location.reload(); // Cara paling efektif untuk reset total
     }
   });
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    // --- Pengecekan Duplikasi Kode Toko ---
-    const currentStoreCode = document.getElementById('lokasi').value;
-    // FIX: Mengonversi kedua nilai ke String untuk perbandingan yang andal
-    if (lastApprovedStoreCode && String(currentStoreCode) === String(lastApprovedStoreCode)) {
-        messageDiv.textContent = `Error: Kode toko ${lastApprovedStoreCode} sudah pernah diajukan dan disetujui. Silakan gunakan kode toko lain.`;
+    // --- Validasi Duplikasi Kode Toko (Diperbarui) ---
+    const currentStoreCode = String(document.getElementById('lokasi').value);
+
+    if (approvedStoreCodes.includes(currentStoreCode)) {
+        messageDiv.textContent = `Error: Kode toko ${currentStoreCode} sudah pernah diajukan dan disetujui.`;
         messageDiv.style.display = "block";
         messageDiv.style.backgroundColor = "#dc3545";
         messageDiv.style.color = "white";
-        return; // Menghentikan proses submit secara total
+        return;
+    }
+    
+    if (pendingStoreCodes.includes(currentStoreCode)) {
+        messageDiv.textContent = `Error: Kode toko ${currentStoreCode} sudah memiliki pengajuan yang sedang direview.`;
+        messageDiv.style.display = "block";
+        messageDiv.style.backgroundColor = "#ffc107";
+        messageDiv.style.color = "black";
+        return;
     }
 
     messageDiv.textContent = "Mengirim data...";
