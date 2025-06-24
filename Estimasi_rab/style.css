@@ -292,27 +292,25 @@ table tbody td select {
     padding: 20px;
   }
 
-  /* ▼▼▼ TAMBAHKAN/MODIFIKASI ATURAN INI ▼▼▼ */
   header {
-    flex-direction: column; /* Stack logo dan judul secara vertikal */
-    padding: 20px;         /* Sesuaikan padding untuk tampilan baru */
-    height: auto;          /* Biarkan tinggi header menyesuaikan konten */
+    flex-direction: column; 
+    padding: 20px;         
+    height: auto;          
   }
 
   header h1 {
     font-size: 1.8rem;
-    text-align: center; /* Pastikan judul tetap di tengah */
+    text-align: center;
   }
 
   .header-logo {
-    position: static;      /* Hapus posisi absolut */
-    transform: none;       /* Hapus transformasi */
-    margin-right: 0;       /* Hapus margin kanan */
-    margin-bottom: 10px;   /* Beri jarak bawah antara logo dan judul */
-    width: 60px;           /* Sedikit sesuaikan ukuran logo */
-    left: auto;            /* Hapus properti 'left' */
+    position: static;      
+    transform: none;       
+    margin-right: 0;       
+    margin-bottom: 10px;   
+    width: 60px;           
+    left: auto;            
   }
-  /* ▲▲▲ BATAS PERUBAHAN ▲▲▲ */
 
   .button-group {
     flex-direction: column;
@@ -320,7 +318,8 @@ table tbody td select {
   }
 
   table {
-    min-width: 650px;
+    /* === PERUBAHAN DI SINI === */
+    min-width: 950px; /* Diperlebar agar kolom harga tidak sempit */
   }
 
   table th,
@@ -349,44 +348,10 @@ table tbody td select {
     font-size: 1.5rem;
   }
 
-  .button-group {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  table {
-    min-width: 650px; /* Adjust min-width for smaller screens if needed, keep it scrollable */
-  }
-
-  table th,
-  table td {
-    padding: 8px;
-    font-size: 0.85rem;
-  }
-
-  .form-container button {
-    padding: 10px 15px;
-    font-size: 1rem;
-  }
-
-  .back-btn {
-    margin-top: 20px;
-    font-size: 0.9rem;
-  }
-
-  .section-title {
-    font-size: 1.1rem;
-  }
-  .grand-total-box {
-    padding: 15px;
-  }
-  .grand-total-box span {
-    font-size: 1.5rem;
-  }
   /* Style untuk membuat input readonly terlihat seperti disabled */
-table tbody td input[readonly] {
-  background-color: #eee; /* Warna latar abu-abu muda */
-  cursor: not-allowed;   /* Ubah cursor mouse menjadi tanda 'tidak diizinkan' */
-  color: #555;
-}
+  table tbody td input[readonly] {
+    background-color: #eee; /* Warna latar abu-abu muda */
+    cursor: not-allowed;   /* Ubah cursor mouse menjadi tanda 'tidak diizinkan' */
+    color: #555;
+  }
 }
