@@ -10,6 +10,7 @@ let sipilTablesWrapper;
 let meTablesWrapper;
 let currentResetButton;
 let categorizedPrices = {};
+let lastApprovedStoreCode = null; // Variabel KUNCI untuk menyimpan kode toko yang sudah disetujui
 
 // --- Helper Functions ---
 const formatRupiah = (number) => {
@@ -133,9 +134,7 @@ const createBoQRow = (category, scope) => {
   row.classList.add("boq-item-row");
   row.dataset.category = category;
   row.dataset.scope = scope;
-  // --- PERUBAHAN DI SINI: value="1.00" diubah menjadi value="0.00" ---
-    row.innerHTML = `<td><span class="row-number"></span></td><td><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td><select class="satuan" name="Satuan_Item" required disabled><option value="Ls">Ls</option><option value="M1">M1</option><option value="M3">M3</option><option value="Btg">Btg</option><option value="M2">M2</option><option value="Bh">Bh</option><option value="Unit">Unit</option><option value="Kg">Kg</option><option value="sel">sel</option><option value="ttk">ttk</option><option value="m">m</option></select></td><td><input type="text" inputmode="decimal" class="volume" name="Volume_Item" value="0.00" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*?)\\..*/g, '$1').replace(/(\\.\\d{2})\\d+/, '$1')" /></td><td><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required readonly /></td><td><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required readonly /></td><td><input type="text" class="total-material" disabled /></td><td><input type="text" class="total-upah" disabled /></td><td><input type="text" class="total-harga" disabled /></td><td><button type="button" class="delete-row-btn">Hapus</button></td>`;
-  // --- AKHIR PERUBAHAN ---
+  row.innerHTML = `<td><span class="row-number"></span></td><td><div class="jenis-pekerjaan-wrapper"><input type="text" class="jenis-pekerjaan-search-input" placeholder="Cari Jenis Pekerjaan"><select class="jenis-pekerjaan hidden" name="Jenis_Pekerjaan_Item" required><option value="">-- Pilih --</option></select><ul class="jenis-pekerjaan-suggestions hidden"></ul></div></td><td><select class="satuan" name="Satuan_Item" required disabled><option value="Ls">Ls</option><option value="M1">M1</option><option value="M3">M3</option><option value="Btg">Btg</option><option value="M2">M2</option><option value="Bh">Bh</option><option value="Unit">Unit</option><option value="Kg">Kg</option><option value="sel">sel</option><option value="ttk">ttk</option><option value="m">m</option></select></td><td><input type="number" class="volume" name="Volume_Item" value="0.00" min="0" step="0.01" /></td><td><input type="number" class="harga-material" name="Harga_Material_Item" min="0" required readonly /></td><td><input type="number" class="harga-upah" name="Harga_Upah_Item" min="0" required readonly /></td><td><input type="text" class="total-material" disabled /></td><td><input type="text" class="total-upah" disabled /></td><td><input type="text" class="total-harga" disabled /></td><td><button type="button" class="delete-row-btn">Hapus</button></td>`;
 
   [row.querySelector(".volume"), row.querySelector(".harga-material"), row.querySelector(".harga-upah")].forEach((input) => {
     input.addEventListener("input", () => calculateTotalPrice(input));
@@ -147,7 +146,6 @@ const createBoQRow = (category, scope) => {
   row.querySelector('.jenis-pekerjaan').addEventListener('change', (e) => autoFillPrices(e.target));
   return row;
 };
-
 
 const updateAllRowNumbersAndTotals = () => {
   document.querySelectorAll(".boq-table-body:not(.hidden)").forEach((tbody) => {
@@ -197,7 +195,6 @@ const calculateGrandTotal = () => {
 window.addEventListener("load", async () => {
   console.log("Window loaded: Initializing script...");
   
-  // ▼▼▼ GANTI DENGAN URL WEB APP DARI HASIL DEPLOY ULANG APPS SCRIPT ANDA ▼▼▼
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPubDTa7E2gT5HeVLv9edAcn1xaTiT3J4BtAVYqaqiFAvFtp1qovTXpqpm-VuNOxQJ/exec"; 
 
   // Inisialisasi variabel global
@@ -210,24 +207,27 @@ window.addEventListener("load", async () => {
   meTablesWrapper = document.getElementById("me-tables-wrapper");
   currentResetButton = form.querySelector("button[type='reset']");
 
-  // Fungsi untuk menonaktifkan form
   const disableForm = (message) => {
       messageDiv.innerHTML = message;
       messageDiv.style.display = 'block';
-      messageDiv.style.backgroundColor = '#ffc107';
+      messageDiv.style.backgroundColor = '#ffc107'; // Kuning untuk informasi
       messageDiv.style.color = 'black';
       form.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
+      if(currentResetButton) currentResetButton.disabled = false;
   };
   
-  // Fungsi untuk mengisi form dengan data riwayat
-  const populateFormWithHistory = (data) => {
+  const populateFormWithHistory = (data, message) => {
       console.log("Populating form with rejected data:", data);
       for (const key in data) {
-          const element = document.getElementsByName(key)[0];
-          if (element) {
-              element.value = (element.type === 'date' && data[key]) ? new Date(data[key]).toISOString().split('T')[0] : data[key];
-              if (key === 'Lingkup Pekerjaan') {
-                  lingkupPekerjaanSelect.dispatchEvent(new Event('change'));
+          if (data.hasOwnProperty(key)) {
+              // Mengganti underscore dengan spasi agar sesuai dengan `name` di HTML
+              const elementName = key.replace(/_/g, " ");
+              const element = document.getElementsByName(elementName)[0];
+              if (element) {
+                  element.value = (element.type === 'date' && data[key]) ? new Date(data[key]).toISOString().split('T')[0] : data[key];
+                  if (key === 'Lingkup_Pekerjaan') {
+                      lingkupPekerjaanSelect.dispatchEvent(new Event('change'));
+                  }
               }
           }
       }
@@ -253,9 +253,9 @@ window.addEventListener("load", async () => {
           }
       }
       updateAllRowNumbersAndTotals();
-      messageDiv.innerHTML = "Formulir Anda sebelumnya ditolak. Silakan periksa kembali data, lakukan revisi, dan kirim ulang.";
+      messageDiv.innerHTML = message;
       messageDiv.style.display = 'block';
-      messageDiv.style.backgroundColor = '#dc3545';
+      messageDiv.style.backgroundColor = '#dc3545'; // Merah untuk penolakan
       messageDiv.style.color = 'white';
   };
 
@@ -266,23 +266,44 @@ window.addEventListener("load", async () => {
           const checkUrl = `${APPS_SCRIPT_URL}?action=checkUserStatus&email=${encodeURIComponent(userEmail)}`;
           const response = await fetch(checkUrl);
           const result = await response.json();
+          
+          console.log("User status check response:", result);
 
-           console.log("Respons dari server:", result);
+          const status = result.status;
+          
+          const statusEnum = {
+              WAITING_COORDINATOR: "Menunggu Persetujuan Koordinator",
+              WAITING_MANAGER: "Menunggu Persetujuan Manajer",
+              REJECTED_COORDINATOR: "Ditolak oleh Koordinator",
+              REJECTED_MANAGER: "Ditolak oleh Manajer",
+              APPROVED: "Disetujui"
+          };
 
-          if (result.status === 'Disetujui') {
-              disableForm('Formulir Anda sudah pernah diajukan dan <strong>Disetujui</strong>. Tidak dapat mengajukan lagi.');
-              return;
-          }
-          if (result.status === 'Menunggu Persetujuan') {
-              disableForm('Formulir Anda sedang <strong>Menunggu Persetujuan</strong>. Harap tunggu proses review.');
-              return;
-          }
-          if (result.status === 'Ditolak' && result.data) {
-              populateFormWithHistory(result.data);
+          if (status === statusEnum.WAITING_COORDINATOR || status === statusEnum.WAITING_MANAGER) {
+              disableForm(`Formulir Anda sedang dalam proses review dengan status: <strong>${status}</strong>. Harap tunggu.`);
+              return; 
+          } 
+          else if (status === statusEnum.REJECTED_COORDINATOR || status === statusEnum.REJECTED_MANAGER) {
+              if (result.data) {
+                  populateFormWithHistory(result.data, `Formulir Anda <strong>${status}</strong>. Silakan periksa, revisi, dan kirim ulang.`);
+              }
+          } 
+          else if (status === statusEnum.APPROVED) {
+              if (result.data && result.data.Lokasi) {
+                  lastApprovedStoreCode = result.data.Lokasi;
+                  messageDiv.innerHTML = `Pengajuan sebelumnya untuk kode toko <strong>${lastApprovedStoreCode}</strong> telah disetujui. Anda dapat membuat pengajuan baru untuk <strong>toko yang berbeda</strong>.`;
+                  messageDiv.style.display = 'block';
+                  messageDiv.style.backgroundColor = '#17a2b8';
+                  messageDiv.style.color = 'white';
+              }
           }
 
       } catch (error) {
           console.error("Gagal memeriksa status pengajuan:", error);
+          messageDiv.textContent = "Gagal memuat status pengajuan terakhir.";
+          messageDiv.style.display = 'block';
+          messageDiv.style.backgroundColor = '#dc3545';
+          messageDiv.style.color = 'white';
       }
   }
 
@@ -332,19 +353,37 @@ window.addEventListener("load", async () => {
     updateAllRowNumbersAndTotals();
   });
 
-currentResetButton.addEventListener("click", () => {
-  form.reset();
-  // messageDiv.style.display = "none"; // Baris ini sudah tidak ada
-  document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
-  sipilTablesWrapper.classList.add("hidden");
-  meTablesWrapper.classList.add("hidden");
-  calculateGrandTotal();
-});
+  currentResetButton.addEventListener("click", () => {
+    if (confirm("Apakah Anda yakin ingin mengulang dan mengosongkan semua isian form?")) {
+        form.reset();
+        document.querySelectorAll(".boq-table-body").forEach(tbody => tbody.innerHTML = "");
+        sipilTablesWrapper.classList.add("hidden");
+        meTablesWrapper.classList.add("hidden");
+        calculateGrandTotal();
+        messageDiv.style.display = "none";
+        lastApprovedStoreCode = null;
+        form.querySelectorAll('input, select, button').forEach(el => el.disabled = false);
+    }
+  });
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
+
+    // --- Pengecekan Duplikasi Kode Toko ---
+    const currentStoreCode = document.getElementById('lokasi').value;
+    // FIX: Mengonversi kedua nilai ke String untuk perbandingan yang andal
+    if (lastApprovedStoreCode && String(currentStoreCode) === String(lastApprovedStoreCode)) {
+        messageDiv.textContent = `Error: Kode toko ${lastApprovedStoreCode} sudah pernah diajukan dan disetujui. Silakan gunakan kode toko lain.`;
+        messageDiv.style.display = "block";
+        messageDiv.style.backgroundColor = "#dc3545";
+        messageDiv.style.color = "white";
+        return; // Menghentikan proses submit secara total
+    }
+
     messageDiv.textContent = "Mengirim data...";
     messageDiv.style.display = "block";
+    messageDiv.style.backgroundColor = '#007bff';
+    messageDiv.style.color = 'white';
     submitButton.disabled = true;
 
     try {
@@ -382,10 +421,9 @@ currentResetButton.addEventListener("click", () => {
         messageDiv.textContent = data.message || "Data berhasil terkirim! Anda akan diarahkan ke Beranda.";
         messageDiv.style.backgroundColor = "#28a745";
         
-        // Alihkan ke homepage setelah 2 detik
         setTimeout(() => {
             window.location.href = '../Homepage/index.html';
-        }, 2000);
+        }, 2500);
 
       } else {
         throw new Error(data.message || "Pengiriman data gagal.");
@@ -396,7 +434,6 @@ currentResetButton.addEventListener("click", () => {
       messageDiv.style.backgroundColor = "#dc3545";
     } finally {
       submitButton.disabled = false;
-      setTimeout(() => messageDiv.style.display = "none", 4000);
     }
   });
 });
